@@ -41,7 +41,7 @@ steps:
     args: 
     - '-c'
     - | 
-      terraform plan -out terraform.tfplan -var="project=${PROJECT_ID}" -var="region=us-central1" -var="zone=us-central1-f"
+      terraform plan -out terraform.tfplan -var="project=${PROJECT_ID}" -var="region=us-east4" -var="zone=us-east4-c"
 # [END tf-plan]
 
 # [START tf-apply]

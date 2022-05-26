@@ -1,4 +1,4 @@
-FROM archlinux/base:latest
+FROM archlinux:latest
 ARG input
 RUN pacman --noconfirm -Syu ca-certificates openssl wget unzip nodejs npm; yes | pacman -Scc
 

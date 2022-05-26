@@ -20,7 +20,7 @@ resource "google_project_iam_member" "cloud_build_GKE_iam" {
 resource "google_container_cluster" "dyson_cluster" {
   project = var.project
   provider           = google-beta
-  name               = "dyson-cluster"
+  name               = "${var.name}-cluster"
   location           = var.zone
   remove_default_node_pool = true
   initial_node_count       = 1
@@ -41,7 +41,7 @@ resource "google_container_cluster" "dyson_cluster" {
 resource "google_container_node_pool" "dyson_pool" {
   provider = google-beta
   project    = var.project
-  name       = "dyson-pool"
+  name       = "${var.name}-pool"
   location   = var.zone
   cluster    = google_container_cluster.dyson_cluster.name
   node_count = 2 
