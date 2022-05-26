@@ -87,6 +87,20 @@ For the default deploy, these variables are set for you in the `cloudbuild.yaml`
 
  `gcloud builds submit --config cloudbuild.yaml --substitutions=_DYSON_APP_NAME="demo-app",_DYSON_TOPIC="projects/sample/topic"`
 
+## Deploy Crypto Example
+
+The crypto ticker and trades example for BTC, ETH and SOL uses the taxirides-realtime example, but it has been updated to point to the crypto feed topics.  It also has configuration to deploy 6 pods and services for the ticker and trades for BTC, ETH and SOL.
+
+ * Run `deploy.sh` to create the initial cluster and to deploy the BTC ticker stream.
+ * Run the following commands to deploy the other feeds.  An additional pod and service will be deployed for each one.
+
+
+gcloud builds submit --config cloudbuild_eth.yaml
+gcloud builds submit --config cloudbuild_sol.yaml
+gcloud builds submit --config cloudbuild_btctrades.yaml
+gcloud builds submit --config cloudbuild_ethtrades.yaml
+gcloud builds submit --config cloudbuild_soltrades.yaml
+
 
 ## Known issues and enhancements
 
