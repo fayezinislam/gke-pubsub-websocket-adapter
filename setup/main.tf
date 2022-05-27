@@ -18,10 +18,10 @@ resource "google_project_iam_member" "cloud_build_GKE_iam" {
 
 # The GKE cluster on which to run the websockets code
 resource "google_container_cluster" "dyson_cluster" {
-  project = var.project
+  project            = var.project
   provider           = google-beta
   name               = "${var.name}-cluster"
-  location           = var.zone
+  location           = var.region
   remove_default_node_pool = true
   initial_node_count       = 1
   workload_identity_config {
@@ -42,9 +42,9 @@ resource "google_container_node_pool" "dyson_pool" {
   provider = google-beta
   project    = var.project
   name       = "${var.name}-pool"
-  location   = var.zone
+  location   = var.region
   cluster    = google_container_cluster.dyson_cluster.name
-  node_count = 2 
+  node_count = 1 
 
   management {
     auto_repair = "true"
@@ -89,4 +89,11 @@ resource "google_service_account" "dyson" {
   project      = var.project
   account_id   = "dyson-sa"
   display_name = "dyson-sa"
+}
+
+# IP for LB
+resource "google_compute_global_address" "ip_address" {
+  name         = "ftx-gcpfsi-ip"
+  project      = var.project
+
 }

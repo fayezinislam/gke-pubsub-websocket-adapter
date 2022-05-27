@@ -18,29 +18,11 @@ steps:
   id: "Set App Name"
   args: ['cfg', 'set', '.', 'APP_NAME', '${_DYSON_APP_NAME}']
 
-  # TF not needed, infra already created 
-  # [Kick off Terraform deployment]
-  #- name: "gcr.io/cloud-builders/gcloud"
-  #id: "deploy-cluster"
-  #dir: "setup"
-  #args:
-  #- "builds"
-  #- "submit"
-  
-  # Theoretically could be the same image, but rebuild with new name to make it easy
-  # [Build Dyson Container Image]
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/${_DYSON_APP_NAME}:latest','.']
-
-  # [Push Container Image to gcr]
-- name: 'gcr.io/cloud-builders/docker'
-  args: ["push", "gcr.io/$PROJECT_ID/${_DYSON_APP_NAME}:latest",]
-
   # [Deploy dyson manifests to GKE]
   # hardcode cluster name bc we want to deploy to the same cluster
   # Don't need to wait for deploy-cluster, removing it
 - name: 'gcr.io/cloud-builders/kubectl'
   args: ['apply', '-f', './kubernetes_eth/']
   env:
-  - 'CLOUDSDK_COMPUTE_ZONE=us-east4-c'
+  - 'CLOUDSDK_COMPUTE_ZONE=us-east4'
   - 'CLOUDSDK_CONTAINER_CLUSTER=ftx-ticker-btc-usd-cluster'

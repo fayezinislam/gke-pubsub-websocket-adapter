@@ -77,3 +77,18 @@ openAPI:
           values:
           - marker: ${PROJECT_ID}
             ref: '#/definitions/io.k8s.cli.setters.PROJECT_ID'
+    io.k8s.cli.substitutions.dns:
+      x-k8s-cli:
+        substitution:
+          name: dns
+          pattern: ${DNS}
+          values:
+          - marker: ${DNS}
+            ref: '#/definitions/io.k8s.cli.setters.DNS'
+    io.k8s.cli.setters.DNS:
+      x-k8s-cli:
+        setter:
+          name: DNS
+          value: sample.com
+          isSet: true
+          required: true

@@ -1,22 +1,7 @@
 timeout: 10800s
 substitutions:
-  _DYSON_APP_NAME: "ftx-ticker-btc-usd"
-  _DYSON_TOPIC: "projects/fsi-select-demo/topics/ftx_ticker_btc_usd"
+  _DNS: "blank"
 steps:
-  # [Set project Id throughout the repo]
-- name: gcr.io/kpt-dev/kpt:latest
-  id: "Set Project ID"
-  args: ['cfg', 'set', '.', 'PROJECT_ID', '${PROJECT_ID}']
-
-  # [Set the Pub/Sub topic to use
-- name: gcr.io/kpt-dev/kpt:latest
-  id: "Set Pub/Sub Topic"
-  args: ['cfg', 'set', '.', 'TOPIC', '${_DYSON_TOPIC}']
-
-  # [Set the name of the app to be deployed into GKE]
-- name: gcr.io/kpt-dev/kpt:latest
-  id: "Set App Name"
-  args: ['cfg', 'set', '.', 'APP_NAME', '${_DYSON_APP_NAME}']
 
   # [Kick off Terraform deployment]
 - name: "gcr.io/cloud-builders/gcloud"
@@ -25,20 +10,47 @@ steps:
   args:
   - "builds"
   - "submit"
-  
+
   # [Build Dyson Container Image]
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/$PROJECT_ID/${_DYSON_APP_NAME}:latest','.']
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/dyson:latest','.']
+  id: 'build-image'
+  waitFor: ['-']
 
   # [Push Container Image to gcr]
 - name: 'gcr.io/cloud-builders/docker'
-  args: ["push", "gcr.io/$PROJECT_ID/${_DYSON_APP_NAME}:latest",]
+  args: ["push", "gcr.io/$PROJECT_ID/dyson:latest",]
+  id: 'push-image'
+  waitFor: ['build-image']
+  
+ # Deploy Manifests
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_soltrades.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_ethtrades.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_btctrades.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_btc.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_sol.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_eth.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
 
-  # [Deploy dyson manifests to GKE]
+  # [Configure and Deploy Ingress]
+- name: gcr.io/kpt-dev/kpt:latest
+  id: "set-url"
+  args: ['cfg', 'set', '.', 'DNS', '${_DNS}']
+
 - name: 'gcr.io/cloud-builders/kubectl'
-  waitFor:
-    - deploy-cluster
-  args: ['apply', '-f', './kubernetes/']
+  args: ['apply', '-f', './ingress.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
   env:
-  - 'CLOUDSDK_COMPUTE_ZONE=us-east4-c'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=${_DYSON_APP_NAME}-cluster'
+  - 'CLOUDSDK_COMPUTE_ZONE=us-east4'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=ftx-ticker-btc-usd-cluster'

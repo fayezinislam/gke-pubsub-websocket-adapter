@@ -1,7 +1,7 @@
 timeout: 10800s
 substitutions:
-  _DYSON_APP_NAME: "ftx-ticker-sol-usd"
-  _DYSON_TOPIC: "projects/fsi-select-demo/topics/ftx_ticker_sol_usd"
+  _DYSON_APP_NAME: "ftx-ticker-btc-usd"
+  _DYSON_TOPIC: "projects/fsi-select-demo/topics/ftx_ticker_btc_usd"
 steps:
   # [Set project Id throughout the repo]
 - name: gcr.io/kpt-dev/kpt:latest
@@ -22,7 +22,7 @@ steps:
   # hardcode cluster name bc we want to deploy to the same cluster
   # Don't need to wait for deploy-cluster, removing it
 - name: 'gcr.io/cloud-builders/kubectl'
-  args: ['apply', '-f', './kubernetes_sol/']
+  args: ['apply', '-f', './kubernetes_btc/']
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=us-east4'
   - 'CLOUDSDK_CONTAINER_CLUSTER=ftx-ticker-btc-usd-cluster'

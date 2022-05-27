@@ -1,0 +1,79 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ftx-websocket-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: ftx-gcpfsi-ip
+    networking.gke.io/managed-certificates: ftx-gcpfsi-com-cert
+    networking.gke.io/v1beta1.FrontendConfig: ftx-websocket-ingress-fc
+    kubernetes.io/ingress.class: gce
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-ticker-btc-usd-service
+            port:
+              number: 80
+      - path: /ticker-btc
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-ticker-btc-usd-service
+            port:
+              number: 80
+      - path: /ticker-eth
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-ticker-eth-usd-service
+            port:
+              number: 80
+      - path: /ticker-sol
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-ticker-sol-usd-service
+            port:
+              number: 80
+      - path: /trades-btc
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-trades-btc-usd-service
+            port:
+              number: 80
+      - path: /trades-eth
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-trades-eth-usd-service
+            port:
+              number: 80
+      - path: /trades-sol
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-trades-sol-usd-service
+            port:
+              number: 80
+---
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: ftx-gcpfsi-com-cert
+spec:
+  domains:
+    - sample.com # {"$kpt-set":"dns"} 
+---
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: ftx-websocket-ingress-fc
+spec:
+  redirectToHttps:
+    enabled: true
+    responseCodeName: "301"
