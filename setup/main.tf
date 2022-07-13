@@ -52,7 +52,7 @@ resource "google_container_node_pool" "dyson_pool" {
   }
 
   node_config {
-    machine_type = "e2-standard-4"  
+    machine_type = "e2-standard-8"  
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform",
     ]

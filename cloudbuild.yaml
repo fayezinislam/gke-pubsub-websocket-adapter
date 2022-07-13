@@ -25,23 +25,11 @@ steps:
   
  # Deploy Manifests
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['builds', 'submit', '--config=cloudbuild_soltrades.yaml']
+  args: ['builds', 'submit', '--config=cloudbuild_1inch_usd.yaml']
   waitFor: ['push-image', 'deploy-cluster']
-- name: 'gcr.io/cloud-builders/gcloud'
-  args: ['builds', 'submit', '--config=cloudbuild_ethtrades.yaml']
-  waitFor: ['push-image', 'deploy-cluster']
-- name: 'gcr.io/cloud-builders/gcloud'
-  args: ['builds', 'submit', '--config=cloudbuild_btctrades.yaml']
-  waitFor: ['push-image', 'deploy-cluster']
-- name: 'gcr.io/cloud-builders/gcloud'
-  args: ['builds', 'submit', '--config=cloudbuild_btc.yaml']
-  waitFor: ['push-image', 'deploy-cluster']
-- name: 'gcr.io/cloud-builders/gcloud'
-  args: ['builds', 'submit', '--config=cloudbuild_sol.yaml']
-  waitFor: ['push-image', 'deploy-cluster']
-- name: 'gcr.io/cloud-builders/gcloud'
-  args: ['builds', 'submit', '--config=cloudbuild_eth.yaml']
-  waitFor: ['push-image', 'deploy-cluster']
+  #- name: 'gcr.io/cloud-builders/gcloud'
+  #args: ['builds', 'submit', '--config=cloudbuild_ethtrades.yaml']
+  #waitFor: ['push-image', 'deploy-cluster']
 
   # [Configure and Deploy Ingress]
 - name: gcr.io/kpt-dev/kpt:latest
@@ -53,4 +41,4 @@ steps:
   waitFor: ['push-image', 'deploy-cluster']
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=us-east4'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=ftx-ticker-btc-usd-cluster'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=ftx-com-mktpair-cluster'
