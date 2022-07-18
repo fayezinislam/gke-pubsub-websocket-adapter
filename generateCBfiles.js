@@ -70,13 +70,12 @@ var connect = async function() {
         console.log('WebSocket Client Connected');
         connection.on('error', function(error) {
             console.log("Connection Error: " + error.toString());
-            setTimeout(connect, wsReconnectInterval);
+            //setTimeout(connect, wsReconnectInterval);
         });
         connection.on('close', function() {
-            console.log('Connection Closed. Attempting to reconnect...');
+	    console.log('Connection closed');
             // subscriptions have been lost, so reset subscriptions
-            marketSubscribeList = [];  
-            setTimeout(connect, wsReconnectInterval);
+            //setTimeout(connect, wsReconnectInterval);
         });
         connection.on('message', function(message) {
             if (message.type === 'utf8') {
@@ -122,13 +121,13 @@ var connect = async function() {
                     // Gets market pairs up to marketPairLimit parameter
                     if(marketPairLimit > 0 && marketPairCounter < marketPairLimit) {
                         console.log("Generating file for " + marketKey);
-                        await sleep(1000);
+                        //await sleep(1000);
                         launchExternalProcess(marketKey);
 			marketPairCounter++;
                     } else if(marketPairCounter <= 0) {
                         // no limit
                         console.log("Generating file for " + marketKey);
-                        await sleep(1000);
+                        //await sleep(1000);
                         launchExternalProcess(marketKey);
 			marketPairCounter++;
                     }
