@@ -25,7 +25,7 @@ spec:
         - name: SYMBOL
           valueFrom:
             configMapKeyRef:
-              name: topic-config-eth
+              name: topic-config # {"$kpt-set":"topic-config"}
               key: topic
         resources:
           limits:

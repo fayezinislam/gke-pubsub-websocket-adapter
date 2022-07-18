@@ -18,6 +18,6 @@ variable "project" {
 variable "name" {
     type        = string
     description = "Default prefix name for GKE deployment"
-    default     = "ftx-ticker-btc-usd"
+    default     = "ftx-com-mktpair"
 }
 

@@ -1,6 +1,6 @@
 timeout: 10800s
-substitutions:
-  _DNS: "blank"
+#substitutions:
+#  _DNS: "blank"
 steps:
 
   # [Kick off Terraform deployment]
@@ -25,20 +25,64 @@ steps:
   
  # Deploy Manifests
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['builds', 'submit', '--config=cloudbuild_1inch_usd.yaml']
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_1inch_usd.yaml']
   waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_1inch_perp.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_1inch_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_aapl_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_aapl_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_1inch_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_1inch_perp.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_1inch_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_aapl_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_aapl_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_1inch_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_1inch_perp.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_1inch_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_aapl_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_aapl_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+
+
   #- name: 'gcr.io/cloud-builders/gcloud'
   #args: ['builds', 'submit', '--config=cloudbuild_ethtrades.yaml']
   #waitFor: ['push-image', 'deploy-cluster']
 
   # [Configure and Deploy Ingress]
-- name: gcr.io/kpt-dev/kpt:latest
-  id: "set-url"
-  args: ['cfg', 'set', '.', 'DNS', '${_DNS}']
+  #- name: gcr.io/kpt-dev/kpt:latest
+  #id: "set-url"
+  #args: ['cfg', 'set', '.', 'DNS', '${_DNS}']
 
-- name: 'gcr.io/cloud-builders/kubectl'
-  args: ['apply', '-f', './ingress.yaml']
-  waitFor: ['push-image', 'deploy-cluster']
-  env:
-  - 'CLOUDSDK_COMPUTE_ZONE=us-east4'
-  - 'CLOUDSDK_CONTAINER_CLUSTER=ftx-com-mktpair-cluster'
+  #- name: 'gcr.io/cloud-builders/kubectl'
+  #args: ['apply', '-f', './ingress.yaml']
+  #waitFor: ['push-image', 'deploy-cluster']
+  #env:
+  #- 'CLOUDSDK_COMPUTE_ZONE=us-east4'
+  #- 'CLOUDSDK_CONTAINER_CLUSTER=ftx-com-mktpair-cluster'

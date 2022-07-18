@@ -21,9 +21,10 @@ resource "google_container_cluster" "dyson_cluster" {
   project            = var.project
   provider           = google-beta
   name               = "${var.name}-cluster"
-  location           = var.region
+  location           = var.zone
   remove_default_node_pool = true
   initial_node_count       = 1
+
   workload_identity_config {
     identity_namespace = "${var.project}.svc.id.goog"
   }
@@ -35,6 +36,11 @@ resource "google_container_cluster" "dyson_cluster" {
       disable-legacy-endpoints = "true"
     }
 
+    shielded_instance_config {
+      enable_integrity_monitoring = true
+      enable_secure_boot          = true
+    }
+
   }
 }
 
@@ -42,7 +48,7 @@ resource "google_container_node_pool" "dyson_pool" {
   provider = google-beta
   project    = var.project
   name       = "${var.name}-pool"
-  location   = var.region
+  location   = var.zone
   cluster    = google_container_cluster.dyson_cluster.name
   node_count = 1 
 
@@ -62,7 +68,10 @@ resource "google_container_node_pool" "dyson_pool" {
     workload_metadata_config {
       node_metadata = "GKE_METADATA_SERVER"
     }
-
+    shielded_instance_config {
+      enable_integrity_monitoring = true
+      enable_secure_boot          = true
+    }
 
   }
 }

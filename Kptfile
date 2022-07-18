@@ -46,6 +46,21 @@ openAPI:
           value: projects/pubsub-public-data/topics/taxirides-realtime
           isSet: true
           required: true
+    io.k8s.cli.substitutions.topic-config:
+      x-k8s-cli:
+        substitution:
+          name: topic-config
+          pattern: ${TOPIC_CONFIG}
+          values:
+          - marker: ${TOPIC_CONFIG}
+            ref: '#/definitions/io.k8s.cli.setters.TOPIC_CONFIG'
+    io.k8s.cli.setters.TOPIC_CONFIG:
+      x-k8s-cli:
+        setter:
+          name: TOPIC_CONFIG
+          value: topic-config
+          isSet: true
+          required: true
     io.k8s.cli.substitutions.service-name:
       x-k8s-cli:
         substitution:

@@ -15,51 +15,746 @@ spec:
         pathType: ImplementationSpecific
         backend:
           service:
-            name: ftx-ticker-btc-usd-service
+            name: ftx-com-ticker-1inch-usd-service
             port:
               number: 80
-      - path: /ticker-btc
+
+      - path: /ticker-1inch-0930
         pathType: ImplementationSpecific
         backend:
           service:
-            name: ftx-ticker-btc-usd-service
+            name: ftx-com-ticker-1inch-0930-service
             port:
               number: 80
-      - path: /ticker-eth
+      - path: /trades-1inch-0930
         pathType: ImplementationSpecific
         backend:
           service:
-            name: ftx-ticker-eth-usd-service
+            name: ftx-com-trades-1inch-0930-service
             port:
               number: 80
-      - path: /ticker-sol
+      - path: /orderbook-1inch-0930
         pathType: ImplementationSpecific
         backend:
           service:
-            name: ftx-ticker-sol-usd-service
+            name: ftx-com-orderbook-1inch-0930-service
             port:
               number: 80
-      - path: /trades-btc
+      - path: /ticker-1inch-perp
         pathType: ImplementationSpecific
         backend:
           service:
-            name: ftx-trades-btc-usd-service
+            name: ftx-com-ticker-1inch-perp-service
             port:
               number: 80
-      - path: /trades-eth
+      - path: /trades-1inch-perp
         pathType: ImplementationSpecific
         backend:
           service:
-            name: ftx-trades-eth-usd-service
+            name: ftx-com-trades-1inch-perp-service
             port:
               number: 80
-      - path: /trades-sol
+      - path: /orderbook-1inch-perp
         pathType: ImplementationSpecific
         backend:
           service:
-            name: ftx-trades-sol-usd-service
+            name: ftx-com-orderbook-1inch-perp-service
             port:
               number: 80
+      - path: /ticker-1inch-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-1inch-usd-service
+            port:
+              number: 80
+      - path: /trades-1inch-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-1inch-usd-service
+            port:
+              number: 80
+      - path: /orderbook-1inch-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-1inch-usd-service
+            port:
+              number: 80
+      - path: /ticker-aapl-0930
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-aapl-0930-service
+            port:
+              number: 80
+      - path: /trades-aapl-0930
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-aapl-0930-service
+            port:
+              number: 80
+      - path: /orderbook-aapl-0930
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-aapl-0930-service
+            port:
+              number: 80
+      - path: /ticker-aapl-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-aapl-usd-service
+            port:
+              number: 80
+      - path: /trades-aapl-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-aapl-usd-service
+            port:
+              number: 80
+      - path: /orderbook-aapl-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-aapl-usd-service
+            port:
+              number: 80
+      - path: /ticker-aave-0930
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-aave-0930-service
+            port:
+              number: 80
+      - path: /trades-aave-0930
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-aave-0930-service
+            port:
+              number: 80
+      - path: /orderbook-aave-0930
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-aave-0930-service
+            port:
+              number: 80
+      - path: /ticker-aave-perp
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-aave-perp-service
+            port:
+              number: 80
+      - path: /trades-aave-perp
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-aave-perp-service
+            port:
+              number: 80
+      - path: /orderbook-aave-perp
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-aave-perp-service
+            port:
+              number: 80
+      - path: /ticker-aave-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-aave-usd-service
+            port:
+              number: 80
+      - path: /trades-aave-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-aave-usd-service
+            port:
+              number: 80
+      - path: /orderbook-aave-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-aave-usd-service
+            port:
+              number: 80
+      - path: /ticker-aave-usdt
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-aave-usdt-service
+            port:
+              number: 80
+      - path: /trades-aave-usdt
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-aave-usdt-service
+            port:
+              number: 80
+      - path: /orderbook-aave-usdt
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-aave-usdt-service
+            port:
+              number: 80
+      - path: /ticker-abnb-0930
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-abnb-0930-service
+            port:
+              number: 80
+      - path: /trades-abnb-0930
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-abnb-0930-service
+            port:
+              number: 80
+      - path: /orderbook-abnb-0930
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-abnb-0930-service
+            port:
+              number: 80
+      - path: /ticker-abnb-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-abnb-usd-service
+            port:
+              number: 80
+      - path: /trades-abnb-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-abnb-usd-service
+            port:
+              number: 80
+      - path: /orderbook-abnb-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-abnb-usd-service
+            port:
+              number: 80
+      - path: /ticker-acb-0930
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-acb-0930-service
+            port:
+              number: 80
+      - path: /trades-acb-0930
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-acb-0930-service
+            port:
+              number: 80
+      - path: /orderbook-acb-0930
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-acb-0930-service
+            port:
+              number: 80
+      - path: /ticker-acb-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-acb-usd-service
+            port:
+              number: 80
+      - path: /trades-acb-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-acb-usd-service
+            port:
+              number: 80
+      - path: /orderbook-acb-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-acb-usd-service
+            port:
+              number: 80
+      - path: /ticker-ada-0930
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-ada-0930-service
+            port:
+              number: 80
+      - path: /trades-ada-0930
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-ada-0930-service
+            port:
+              number: 80
+      - path: /orderbook-ada-0930
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-ada-0930-service
+            port:
+              number: 80
+      - path: /ticker-adabear-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-adabear-usd-service
+            port:
+              number: 80
+      - path: /trades-adabear-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-adabear-usd-service
+            port:
+              number: 80
+      - path: /orderbook-adabear-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-adabear-usd-service
+            port:
+              number: 80
+      - path: /ticker-adabull-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-adabull-usd-service
+            port:
+              number: 80
+      - path: /trades-adabull-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-adabull-usd-service
+            port:
+              number: 80
+      - path: /orderbook-adabull-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-adabull-usd-service
+            port:
+              number: 80
+      - path: /ticker-adahalf-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-adahalf-usd-service
+            port:
+              number: 80
+      - path: /trades-adahalf-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-adahalf-usd-service
+            port:
+              number: 80
+      - path: /orderbook-adahalf-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-adahalf-usd-service
+            port:
+              number: 80
+      - path: /ticker-adahedge-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-adahedge-usd-service
+            port:
+              number: 80
+      - path: /trades-adahedge-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-adahedge-usd-service
+            port:
+              number: 80
+      - path: /orderbook-adahedge-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-adahedge-usd-service
+            port:
+              number: 80
+      - path: /ticker-ada-perp
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-ada-perp-service
+            port:
+              number: 80
+      - path: /trades-ada-perp
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-ada-perp-service
+            port:
+              number: 80
+      - path: /orderbook-ada-perp
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-ada-perp-service
+            port:
+              number: 80
+      - path: /ticker-agld-perp
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-agld-perp-service
+            port:
+              number: 80
+      - path: /trades-agld-perp
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-agld-perp-service
+            port:
+              number: 80
+      - path: /orderbook-agld-perp
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-agld-perp-service
+            port:
+              number: 80
+      - path: /ticker-agld-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-agld-usd-service
+            port:
+              number: 80
+      - path: /trades-agld-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-agld-usd-service
+            port:
+              number: 80
+      - path: /orderbook-agld-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-agld-usd-service
+            port:
+              number: 80
+      - path: /ticker-akro-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-akro-usd-service
+            port:
+              number: 80
+      - path: /trades-akro-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-akro-usd-service
+            port:
+              number: 80
+      - path: /orderbook-akro-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-akro-usd-service
+            port:
+              number: 80
+      - path: /ticker-akro-usdt
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-akro-usdt-service
+            port:
+              number: 80
+      - path: /trades-akro-usdt
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-akro-usdt-service
+            port:
+              number: 80
+      - path: /orderbook-akro-usdt
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-akro-usdt-service
+            port:
+              number: 80
+      - path: /ticker-alcx-perp
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-alcx-perp-service
+            port:
+              number: 80
+      - path: /trades-alcx-perp
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-alcx-perp-service
+            port:
+              number: 80
+      - path: /orderbook-alcx-perp
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-alcx-perp-service
+            port:
+              number: 80
+      - path: /ticker-alcx-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-alcx-usd-service
+            port:
+              number: 80
+      - path: /trades-alcx-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-alcx-usd-service
+            port:
+              number: 80
+      - path: /orderbook-alcx-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-alcx-usd-service
+            port:
+              number: 80
+      - path: /ticker-aleph-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-aleph-usd-service
+            port:
+              number: 80
+      - path: /trades-aleph-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-aleph-usd-service
+            port:
+              number: 80
+      - path: /orderbook-aleph-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-aleph-usd-service
+            port:
+              number: 80
+      - path: /ticker-algo-0930
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-algo-0930-service
+            port:
+              number: 80
+      - path: /trades-algo-0930
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-algo-0930-service
+            port:
+              number: 80
+      - path: /orderbook-algo-0930
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-algo-0930-service
+            port:
+              number: 80
+      - path: /ticker-algobear-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-algobear-usd-service
+            port:
+              number: 80
+      - path: /trades-algobear-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-algobear-usd-service
+            port:
+              number: 80
+      - path: /orderbook-algobear-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-algobear-usd-service
+            port:
+              number: 80
+      - path: /ticker-algobull-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-algobull-usd-service
+            port:
+              number: 80
+      - path: /trades-algobull-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-algobull-usd-service
+            port:
+              number: 80
+      - path: /orderbook-algobull-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-algobull-usd-service
+            port:
+              number: 80
+      - path: /ticker-algohalf-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-algohalf-usd-service
+            port:
+              number: 80
+      - path: /trades-algohalf-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-algohalf-usd-service
+            port:
+              number: 80
+      - path: /orderbook-algohalf-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-algohalf-usd-service
+            port:
+              number: 80
+      - path: /ticker-algohedge-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-algohedge-usd-service
+            port:
+              number: 80
+      - path: /trades-algohedge-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-algohedge-usd-service
+            port:
+              number: 80
+      - path: /orderbook-algohedge-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-algohedge-usd-service
+            port:
+              number: 80
+      - path: /ticker-algo-perp
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-algo-perp-service
+            port:
+              number: 80
+      - path: /trades-algo-perp
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-algo-perp-service
+            port:
+              number: 80
+      - path: /orderbook-algo-perp
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-algo-perp-service
+            port:
+              number: 80
+      - path: /ticker-algo-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-algo-usd-service
+            port:
+              number: 80
+      - path: /trades-algo-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-algo-usd-service
+            port:
+              number: 80
+      - path: /orderbook-algo-usd
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-algo-usd-service
+            port:
+              number: 80
+      - path: /ticker-algo-usdt
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-algo-usdt-service
+            port:
+              number: 80
+      - path: /trades-algo-usdt
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-algo-usdt-service
+            port:
+              number: 80
+      - path: /orderbook-algo-usdt
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-algo-usdt-service
+            port:
+              number: 80
+      - path: /ticker-alice-perp
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-alice-perp-service
+            port:
+              number: 80
+      - path: /trades-alice-perp
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-trades-alice-perp-service
+            port:
+              number: 80
+      - path: /orderbook-alice-perp
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-orderbook-alice-perp-service
+            port:
+              number: 80
+
 ---
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
@@ -67,7 +762,7 @@ metadata:
   name: ftx-gcpfsi-com-cert
 spec:
   domains:
-    - sample.com # {"$kpt-set":"dns"} 
+    - ftx.gcpfsi.com # {"$kpt-set":"dns"} 
 ---
 apiVersion: networking.gke.io/v1beta1
 kind: FrontendConfig
