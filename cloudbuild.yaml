@@ -24,8 +24,177 @@ steps:
   waitFor: ['build-image']
   
   # Deploy Manifests
-%DEPLOY_POD_CMDS%
-
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_1inch_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_1inch_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_1inch_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_1inch_perp.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_1inch_perp.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_1inch_perp.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_1inch_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_1inch_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_1inch_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_aapl_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_aapl_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_aapl_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_aapl_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_aapl_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_aapl_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_aave_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_aave_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_aave_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_aave_perp.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_aave_perp.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_aave_perp.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_aave_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_aave_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_aave_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_aave_usdt.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_aave_usdt.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_aave_usdt.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_abnb_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_abnb_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_abnb_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_abnb_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_abnb_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_abnb_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_acb_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_acb_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_acb_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_acb_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_acb_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_acb_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_ada_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_ada_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_ada_0930.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_adabear_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_adabear_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_adabear_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_adabull_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_adabull_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_adabull_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_adahalf_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_adahalf_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_adahalf_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_adahedge_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_adahedge_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_adahedge_usd.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_ticker_ada_perp.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_trades_ada_perp.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['builds', 'submit', '--config=cloudbuild_mktpairs/cloudbuild_orderbook_ada_perp.yaml']
+  waitFor: ['push-image', 'deploy-cluster']
   #- name: 'gcr.io/cloud-builders/gcloud'
   #args: ['builds', 'submit', '--config=cloudbuild_ethtrades.yaml']
   #waitFor: ['push-image', 'deploy-cluster']

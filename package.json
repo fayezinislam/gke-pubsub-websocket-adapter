@@ -1,0 +1,11 @@
+{
+  "type": "module",
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "websocket": "^1.0.34",
+    "ws": "^8.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.4"
+  }
+}
