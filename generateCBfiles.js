@@ -233,7 +233,7 @@ function outputCBBuilds(marketPair, type) {
   const cbCall = `gcloud builds submit --config ${fileName}` + "\n";
   console.log(cbCall);
 
-  fs.writeFileSync(folderPath + "cbCommands.cfg", cbCall, {'flag':'a'}, err => {
+  fs.writeFileSync(folderPath + "cbCommands.sh, cbCall, {'flag':'a'}, err => {
       if (err) {
         console.error(err);
       }
@@ -275,6 +275,27 @@ function outputIngressPaths(marketPair, type) {
   var appNameD = "ftx-com-" + type + "-" + marketPairStrD;
   var appNameU = "ftx_com_" + type + "_" + marketPairStrU;
 
+  const ingressPre = `apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ftx-websocket-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: ftx-gcpfsi-ip
+    networking.gke.io/managed-certificates: ftx-gcpfsi-com-cert
+    networking.gke.io/v1beta1.FrontendConfig: ftx-websocket-ingress-fc
+    kubernetes.io/ingress.class: gce
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ftx-com-ticker-btc-usd-service
+            port:
+              number: 80` + "\n";
+
   const ingressPaths = `      - path: /${type}-${marketPairStrD}
         pathType: ImplementationSpecific
         backend:
@@ -282,9 +303,26 @@ function outputIngressPaths(marketPair, type) {
             name: ${appNameD}-service
             port:
               number: 80` + "\n";
-  console.log(ingressPaths);
 
-  fs.writeFileSync(folderPath + "ingressPaths.cfg", ingressPaths, {'flag':'a'}, err => {
+  const ingressPost = `---
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: ftx-gcpfsi-com-cert
+spec:
+  domains:
+    - ftx.gcpfsi.com # {"$kpt-set":"dns"} 
+---
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: ftx-websocket-ingress-fc
+spec:
+  redirectToHttps:
+    enabled: true
+    responseCodeName: "301"` + "\n";
+
+  fs.writeFileSync(folderPath + "ingressPaths.yaml", ingressPre + ingressPaths + ingressPost, {'flag':'a'}, err => {
       if (err) {
         console.error(err);
       }
