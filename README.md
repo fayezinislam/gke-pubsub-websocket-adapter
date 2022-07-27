@@ -80,7 +80,7 @@ For the default deploy, these variables are set for you in the `cloudbuild.yaml`
 `gcloud builds submit --config cloudbuild.yaml --substitutions=_DYSON_APP_NAME="demo-app",_DYSON_TOPIC="projects/sample/topic"`
 
 
-### How it works
+## How it works
 
 For each PubSub topic, an accompanying websocket service will be created and exposed.  The [websocket-to-pubsub-ingest](https://github.com/fayezinislam/websocket-to-pubsub-ingest) project published the messages from the original websocket feed to the pubsub topics in order to scale out the messages.  This project will take those messages on the individual topics and make them available through individual websocket streams.   
 
@@ -90,15 +90,15 @@ For each PubSub topic, an accompanying websocket service will be created and exp
 
 
 
-### Deployment
+## Deployment
 
 
-#### 1) Prerequisistes
+### 1) Prerequisistes
 
  * Install gcloud
  * Install terraform
 
-#### 2) Create Cluster
+### 2) Create Cluster
   
 Run the following command to create the GKE cluster and build the docker image.  This script will trigger the Cloud Build tool to run the build for the [cloudbuild.yaml](cloudbuild.yaml) file.
 
@@ -109,7 +109,7 @@ Run the following command to create the GKE cluster and build the docker image. 
  * Confirm that the cluster has been created.  
  * Confirm that a static IP with the name `ftx-gcpfsi-ip` was created
 
-#### 3) Generate configuration and config for market pairs
+### 3) Generate configuration and config for market pairs
 
 Run the following command.  This will connect to the websocket to get the market pair list, and then generate configuration and config for the market pairs.  There is a large list of market pairs, and the list can change.  This will retrieve the current list and generate configuration for it.  The configuration will be used for the next section.
 
@@ -134,7 +134,7 @@ To change what the program is generating, look at the outputCBCalls, outputCBBui
 
 
 
-#### 4) Create pods and services with cloud build
+### 4) Create pods and services with cloud build
 
 Now that the configuration and scripts have been generated for the marketpairs, run the script to deploy the pods per marketpair and channel.  The generated YAML files were saved in the `cloudbuild_mktpairs` folder along with the script to deploy them.  Run the script to deploy the pods to the kubernetes cluster
 
@@ -162,7 +162,7 @@ node listen.js 0.0.0.0:8080
 ```
 
 
-#### 5) Create ingress
+### 5) Create ingress
 
 All of the pods and services have been created, however, they are not publicly accessible.  Create an ingress to allow the endpoints to be accesible through a domain name and path.  The program in step 3 generated the ingress.yaml.  Deploy that file to create the ingress with the path names
 
@@ -176,7 +176,7 @@ kubectl get pods
 This will take a while to run, but it's creating an ingress with all of its properties and paths configured.  After it is created, verify either through the console or command line.
 
 
-#### 6) Configure DNS and certificates
+### 6) Configure DNS and certificates
 
  * Create a managed cert with the name `ftx-gcpfsi-com-cert`
  * Configure the DNS entry of the domain name to point to the ingress IP
@@ -192,7 +192,7 @@ To understand the status of the certificate you can run the following:
 `gcloud compute ssl-certificates list `
 
  
-#### 7) Test configuration and websocket
+### 7) Test configuration and websocket
 
 Test the websocket using the domain and the path that is described in the ingress.yaml.
 
