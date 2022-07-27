@@ -122,8 +122,19 @@ Run the following command.  This will connect to the websocket to get the market
  * DEBUG - output extra debug messages (true/false)
 
 ```
+export PROJECT_NAME=xxxx
+export ZONE=us-central1-a
+export CLUSTER_NAME=ftx-com-mktpair-cluster
+export WS_URL=wss://domain.com
+export TOPIC_PREFIX=projects/$PROJECT_NAME/topics/prefix_
+export MKT_PAIR_LIST_LIMIT=25
+export DEBUG=true
+
+npm install
+
 node ./generateCBfiles.js $PROJECT_NAME $ZONE $CLUSTER_NAME $WS_URL $TOPIC_PREFIX $MKT_PAIR_LIST_LIMIT $DEBUG
 ```
+
 This program will generate the following.
  * Cloudbuild YAML file - Generated for each market pair in the "cloudbuild_mktpairs/" folder.  The YAML file contains settings for that market pair, setting the YAML values using kpt in the kubernetes_mktpair folder.  The files in the kubernetes_mktpair folder are for creating the resources in kubernetes, but the YAML files in cloudbuild_mktpairs set the parameters for each market pair.
  * cbCalls.cfg - creates config that can be used in the cloudbuild.yaml - these commands will create the kubernetes pod for the market pair.  However, cloudbuild has a limit of 100 steps, which means if you have more than 100 market pairs, this approach won't work

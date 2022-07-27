@@ -233,7 +233,7 @@ function outputCBBuilds(marketPair, type) {
   const cbCall = `gcloud builds submit --config ${fileName}` + "\n";
   console.log(cbCall);
 
-  fs.writeFileSync(folderPath + "cbCommands.sh, cbCall, {'flag':'a'}, err => {
+  fs.writeFileSync(folderPath + "cbCommands.sh", cbCall, {'flag':'a'}, err => {
       if (err) {
         console.error(err);
       }
