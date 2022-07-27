@@ -132,6 +132,8 @@ export DEBUG=true
 
 npm install
 
+mkdir cloudbuild_mktpairs
+
 node ./generateCBfiles.js $PROJECT_NAME $ZONE $CLUSTER_NAME $WS_URL $TOPIC_PREFIX $MKT_PAIR_LIST_LIMIT $DEBUG
 ```
 
