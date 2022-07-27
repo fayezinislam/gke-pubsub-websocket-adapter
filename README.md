@@ -5,21 +5,7 @@
 
   
 
-The `gke-pubsub-websocket-adapter` provides an easy way to distribute [Google Cloud Pub/Sub](https://cloud.google.com/pubsub) topic messages over
-
-[WebSockets](https://en.wikipedia.org/wiki/WebSocket) so that they may be sent to web clients without using the `gcloud` SDK or Pub/Sub API.
-
-  
-
-## Synopsis
-
-  
-
-The `gke-pubsub-websocket-adapter` is a tool to create the support infrastructure necessary to operate a
-
-load-balanced, autoscaled [GKE](https://cloud.google.com/kubernetes-engine) cluster that mirrors
-
-messages sent to a Pub/Sub topic to clients connecting through WebSockets.
+The `gke-pubsub-websocket-adapter` provides an easy way to distribute [Google Cloud Pub/Sub](https://cloud.google.com/pubsub) topic messages over [WebSockets](https://en.wikipedia.org/wiki/WebSocket) so that they may be sent to web clients without using the `gcloud` SDK or Pub/Sub API.
 
   
 
@@ -44,16 +30,6 @@ in a separate project provided that it is readable by the user or service accoun
 * A GKE cluster
 
 * A front-end load balancer
-
-  
-
-Out-of-the-box, `gke-pubsub-websocket-adapter` defaults to using the [NYC Taxi RIdes public
-
-topic](https://github.com/googlecodelabs/cloud-dataflow-nyc-taxi-tycoon) that is available to all GCP users. Please note that this
-
-topic's message rate can go escalate to 2500 messages per second or
-
-more at times.
 
   
 
@@ -128,23 +104,6 @@ WebSockets. These include:
 
   
 
-### Deployment
-
-  
-
-*  [Cloud Build](https://github.com/GoogleCloudPlatform/gke-pubsub-websocket-adapter/blob/main/cloudbuild.yaml)
-
-*  [Terraform](https://github.com/GoogleCloudPlatform/gke-pubsub-websocket-adapter/blob/main/setup/main.tf)
-
-  
-
-To deploy the `gke-pubsub-websocket-adapter` ensure you have set
-
-`gcloud config set project sample-project` to the project you wish to
-
-deploy the `gke-pubsub-websocket-adapter` in. After that you can run `sh deploy.sh` to deploy everything you need for a sample deployment using the public [NYC Taxi Rides feed](https://github.com/GoogleCloudPlatform/nyc-taxirides-stream-feeder) `projects/pubsub-public-data/topics/taxirides-realtime"` Pub/Sub topic.
-
-  
 
 ### Authentication
 
@@ -175,17 +134,99 @@ For the default deploy, these variables are set for you in the `cloudbuild.yaml`
 
   
 
-## Deploy Crypto Example
 
+
+### Deployment
+
+
+#### 1) Prerequisistes
+
+ * Install gcloud
+ * Install terraform
+
+#### 2) Create Cluster
   
+Run the following command to create the GKE cluster and build the docker image.  This script will trigger the Cloud Build tool to run the build for the [cloudbuild.yaml](cloudbuild.yaml) file.
 
-The crypto ticker and trades example for BTC, ETH and SOL uses the taxirides-realtime example, but it has been updated to point to the crypto feed topics. It also has configuration to deploy 6 pods and services for the ticker and trades for BTC, ETH and SOL.
+```
+./deploy.sh
+```
 
-  
+ * Confirm that the cluster has been created.  
+ * Confirm that a static IP with the name `ftx-gcpfsi-ip` was created
 
-* Run `deploy.sh example.com` to deploy the cluster and workloads.
+#### 3) Generate configuration and config for market pairs
 
-Since the sample leverage's TLS, you will need to point an A record to the address created as apart of the terraform script. You can get the address by running the following.
+Run the following command.  This will connect to the websocket to get the market pair list, and then generate configuration and config for the market pairs.  There is a large list of market pairs, and the list can change.  This will retrieve the current list and generate configuration for it.  The configuration will be used for the next section.
+
+ * PROJECT_NAME - service account to use
+ * ZONE - zone to deploy the kubernetes cluster to
+ * CLUSTER_NAME - name of kubernetes cluster
+ * WS_URL - websocket url (wss://domain/path)
+ * TOPIC_PREFIX - full prefix for topic names ("projects/$PROJECT_NAME/topics/prefix_")
+ * MKT_PAIR_LIST_LIMIT - Gets first n pairs from the list.  Or use -1 for all
+ * DEBUG - output extra debug messages (true/false)
+
+```
+node ./generateCBfiles.js $PROJECT_NAME $ZONE $CLUSTER_NAME $WS_URL $TOPIC_PREFIX $MKT_PAIR_LIST_LIMIT $DEBUG
+```
+This program will generate the following.
+ * Cloudbuild YAML file - Generated for each market pair in the "cloudbuild_mktpairs/" folder.  The YAML file contains settings for that market pair, setting the YAML values using kpt in the kubernetes_mktpair folder.  The files in the kubernetes_mktpair folder are for creating the resources in kubernetes, but the YAML files in cloudbuild_mktpairs set the parameters for each market pair.
+ * cbCalls.cfg - creates config that can be used in the cloudbuild.yaml - these commands will create the kubernetes pod for the market pair.  However, cloudbuild has a limit of 100 steps, which means if you have more than 100 market pairs, this approach won't work
+ * cbCommands.sh - creates a script that calls a list of commands that will deploy the market pair pods.  
+ * ingress.yaml - creates the ingress config and paths
+
+To change what the program is generating, look at the outputCBCalls, outputCBBuilds and outputIngressPaths functions.
+
+
+
+#### 4) Create pods and services with cloud build
+
+Now that the configuration and scripts have been generated for the marketpairs, run the script to deploy the pods per marketpair and channel.  The generated YAML files were saved in the `cloudbuild_mktpairs` folder along with the script to deploy them.  Run the script to deploy the pods to the kubernetes cluster
+
+```
+ls -l ./cloudbuild_mktpairs
+mv ./cloudbuild_mktpairs/cbCommands.sh ./
+chmod +x ./cbCommands.sh
+./cbCommands.sh
+```
+
+This script will take a while to run, especially if there are a lot of market pairs.  When completed, confirm all pods and services have been deployed and are running, either through the console or command line
+
+```
+kubectl get pods
+kubectl get services
+```
+
+To test, you can set up a port forward to the service and use the listen.js program to connect.  By default, the service is not available outside of the cluster.  
+
+```
+kubectl port-forward service/$SERVICE_NAME 8080:80
+
+# new ssh session
+node listen.js 0.0.0.0:8080
+```
+
+
+#### 5) Create ingress
+
+All of the pods and services have been created, however, they are not publicly accessible.  Create an ingress to allow the endpoints to be accesible through a domain name and path.  The program in step 3 generated the ingress.yaml.  Deploy that file to create the ingress with the path names
+
+```
+ls -l ./cloudbuild_mktpairs
+mv ./cloudbuild_mktpairs/ingress.yaml ./
+kubectl apply -f ./cloudbuild_mktpairs/ingress.yaml
+```
+
+This will take a while to run, but it's creating an ingress with all of its properties and paths configured.  After it is created, verify either through the bonus.
+
+
+#### 6) Configure DNS and certificates
+
+ * Create a managed cert with the name `ftx-gcpfsi-com-cert`
+ * Configure the DNS entry of the domain name to point to the ingress IP
+
+ Since the sample leverage's TLS, you will need to point an A record to the address created as apart of the terraform script. You can get the address by running the following.
 
 `gcloud compute addresses describe ftx-gcpfsi-ip --global --format="value(address)"`
 
@@ -195,6 +236,12 @@ To understand the status of the certificate you can run the following:
 
 `gcloud compute ssl-certificates list `
 
+ 
+#### 7) Test configuration and websocket
+
+`node listen.js $DOMAIN_NAME/$PATH`
+
+Open a web browser and visit `$DOMAIN_NAME/$PATH`
 
  
   

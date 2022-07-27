@@ -1,10 +1,10 @@
 #!/bin/bash
-if [ $# -eq 0 ] | [ -z "$1" ]
-  then
-    echo "No arguments supplied, please supply a hostname."
-    echo "example: ./deploy.sh example.com"
-    exit 1
-fi
+#if [ $# -eq 0 ] | [ -z "$1" ]
+#  then
+#    echo "No arguments supplied, please supply a hostname."
+#    echo "example: ./deploy.sh example.com"
+#    exit 1
+#fi
 export PROJECT_ID=$(gcloud config get-value project)
 gcloud services enable --project ${PROJECT_ID} \
     cloudresourcemanager.googleapis.com \

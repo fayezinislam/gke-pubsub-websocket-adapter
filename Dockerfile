@@ -8,7 +8,7 @@ RUN chmod +x /project/exec.sh
 RUN npm install -g pulltop
 
 RUN wget -q -O /tmp/websocketd.zip \
-    https://github.com/joewalnes/websocketd/releases/download/v0.2.9/websocketd-0.2.9-linux_amd64.zip \
+    https://github.com/joewalnes/websocketd/releases/download/v0.4.1/websocketd-0.4.1-linux_amd64.zip \
     && unzip /tmp/websocketd.zip -d /tmp/websocketd && mv /tmp/websocketd/websocketd /usr/bin \
     && chmod +x /usr/bin/websocketd
 
