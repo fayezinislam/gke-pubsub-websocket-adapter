@@ -35,104 +35,58 @@ in a separate project provided that it is readable by the user or service accoun
 
 ## Architecture
 
-The `gke-pubsub-websocket-adapter` clusters are stateless and doesn't require persistent disks for
+The `gke-pubsub-websocket-adapter` clusters are stateless and doesn't require persistent disks for the VMs in the cluster. A memory-mapped filesystem is specified within the image that is used for ephemeral POSIX-storage of the Pub/Sub opic messages. Storing a buffer of these messages locally has a few advantages:
 
-the VMs in the cluster. A memory-mapped filesystem is specified within
-
-the image that is used for ephemeral POSIX-storage of the Pub/Sub
-
-topic messages. Storing a buffer of these messages locally has a few
-
-advantages:
-
+* It decouples the subscription from client WebSocket connections, and multiplexes potentially many clients while only consuming a single subscription per VM.
+* By using `tail -f` as the command piped to [`websocketd`](http://websocketd.com/), clients are served a cache of the last 10 messages published to the topic, even when there is no immediate message flow. This allows for UIs rendering message content to show meaningful data even during periods of low traffic.
   
 
-* It decouples the subscription from client WebSocket connections, and
+The `gke-pubsub-websocket-adapter` exposed to web clients through a single endpoint that maps to an indivdual Pub/Sub topic and load balances across VMs in the cluster. The cluster is set to scale up and down automatically based upon the number of clients connected.
 
-multiplexes potentially many clients while only consuming a single
+Currently, the `gke-pubsub-websocket-adapter` uses WebSockets in half-duplex and does not support the publishing of messages by clients over the same WebSocket connection.
 
-subscription per VM.
-
-* By using `tail -f` as the command piped to [`websocketd`](http://websocketd.com/), clients are
-
-served a cache of the last 10 messages published to the topic,
-
-even when there is no immediate message flow. This allows for UIs
-
-rendering message content to show meaningful data even during periods
-
-of low traffic.
-
-  
-
-The `gke-pubsub-websocket-adapter` exposed to web clients through a single endpoint that maps to
-
-an indivdual Pub/Sub topic and load balances across VMs in the cluster. The cluster is set to scale up and down
-
-automatically based upon the number of clients connected.
-
-  
-
-Currently, the `gke-pubsub-websocket-adapter` uses WebSockets in half-duplex and does not support
-
-the publishing of messages by clients over the same WebSocket connection.
-
-  
   
 
 ## ![Architecture](architecture.svg  "Architecture")
 
   
 
-The `gke-pubsub-websocket-adapter`'s architecture consists of a number of underlying
-
-components that work in concert to distribute Pub/Sub messages over
-
-WebSockets. These include:
+The `gke-pubsub-websocket-adapter`'s architecture consists of a number of underlying components that work in concert to distribute Pub/Sub messages over WebSockets. These include:
 
   
-
 ### Runtime
 
   
 
 *  [`websocketd`](http://websocketd.com/) CLI for serving websocket clients
-
 *  [`pulltop`](https://github.com/GoogleCloudPlatform/pulltop) CLI for Pub/Sub subscription management
-
 *  [GKE](https://cloud.google.com/kubernetes-engine)
-
-  
 
 
 ### Authentication
 
-  
-
 The `gke-pubsub-websocket-adapter` uses [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) to authenticate with Pub/Sub under the Google service account called `dyson-sa`. If you are wanting to use a private Pub/Sub topic this service account will require access to the topic.
-
-  
-  
 
 ## Configuration
 
   
-
 [kpt](https://googlecontainertools.github.io/kpt/) is used for setting config for the Kubernetes manifests.
 
-  
-
 You can see the variables that can be set by running `kpt cfg list-setters .` from within the directory.
-
-  
 
 For the default deploy, these variables are set for you in the `cloudbuild.yaml` file. If you would like to pass through a different topic for the example you can so by passing [substitution variables](https://cloud.google.com/cloud-build/docs/configuring-builds/substitute-variable-values) into Cloudbuild.
 
   
-
 `gcloud builds submit --config cloudbuild.yaml --substitutions=_DYSON_APP_NAME="demo-app",_DYSON_TOPIC="projects/sample/topic"`
 
-  
+
+### How it works
+
+For each PubSub topic, an accompanying websocket service will be created and exposed.  The [websocket-to-pubsub-ingest](https://github.com/fayezinislam/websocket-to-pubsub-ingest) project published the messages from the original websocket feed to the pubsub topics in order to scale out the messages.  This project will take those messages on the individual topics and make them available through individual websocket streams.   
+
+![Market Data PubSub to Websocket](images/market-data-pubsub-ws.png)
+
+![Market Data Websocket Streaming](images/market-data-websocket-streaming.png)
 
 
 
@@ -216,9 +170,10 @@ All of the pods and services have been created, however, they are not publicly a
 ls -l ./cloudbuild_mktpairs
 mv ./cloudbuild_mktpairs/ingress.yaml ./
 kubectl apply -f ./cloudbuild_mktpairs/ingress.yaml
+kubectl get pods
 ```
 
-This will take a while to run, but it's creating an ingress with all of its properties and paths configured.  After it is created, verify either through the bonus.
+This will take a while to run, but it's creating an ingress with all of its properties and paths configured.  After it is created, verify either through the console or command line.
 
 
 #### 6) Configure DNS and certificates
@@ -239,24 +194,19 @@ To understand the status of the certificate you can run the following:
  
 #### 7) Test configuration and websocket
 
+Test the websocket using the domain and the path that is described in the ingress.yaml.
+
 `node listen.js $DOMAIN_NAME/$PATH`
 
-Open a web browser and visit `$DOMAIN_NAME/$PATH`
+Open a web browser and visit `$DOMAIN_NAME/$PATH`.  This will display a websocket test UI.  Change the path to change the websocket target.  
 
  
-  
 
 ## Known issues and enhancements
 
   
 
-* If you visit the cluster on the HTTP port instead of the WS/S port,
-
-you will be presented with the `websocketd` diagnostic
-
-page. Clicking on the checkbox will allow you to see the Pub/Sub
-
-messages coming through the WebSocket in the browser. This can be disabled by removing the `--devconsole` argument from the `websocketd` call in the [container setup's](https://github.com/GoogleCloudPlatform/gke-pubsub-websocket-adapter/blob/main/container/exec.sh) `exec.sh` file.
+* If you visit the cluster on the HTTP port instead of the WS/S port, you will be presented with the `websocketd` diagnostic page. Clicking on the checkbox will allow you to see the Pub/Sub messages coming through the WebSocket in the browser. This can be disabled by removing the `--devconsole` argument from the `websocketd` call in the [container setup's](https://github.com/GoogleCloudPlatform/gke-pubsub-websocket-adapter/blob/main/container/exec.sh) `exec.sh` file.
 
 * If you would like to secure your websockets with TLS to support _wss_ (_WebSocket_ Secure) you can follow [this documentation](https://cloud.google.com/kubernetes-engine/docs/how-to/managed-certs) or if you would like to leverage Google-managed certificates you can use the following [documentation](https://cloud.google.com/kubernetes-engine/docs/how-to/managed-certs).
 
@@ -273,17 +223,13 @@ messages coming through the WebSocket in the browser. This can be disabled by re
 _This is not an officially supported Google product._
 
   
-
 The `gke-pubsub-websocket-adapter` is under active development. Interfaces and functionality may change at any time.
 
   
 
 ## License
 
-  
 
 This repository is licensed under the Apache 2 license (see [LICENSE](LICENSE.txt)).
-
-  
 
 Contributions are welcome. See [CONTRIBUTING](CONTRIBUTING.md) for more information.

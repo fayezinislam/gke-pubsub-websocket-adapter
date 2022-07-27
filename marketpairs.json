@@ -1,9 +1,0 @@
-{
-  "project": "ftx-com-streaming-demo",
-  "zone": "asia-northeast1-b",
-  "cluster": "ftx-com-mktpair-cluster",
-  "websocketUrl": "wss://ftx.us/ws/",
-  "topicPrefix": "projects/$PROJECT_NAME/topics/ftx_us_",
-  "debug": true,
-  "marketPairs": [] 
-}
