@@ -116,6 +116,7 @@ Run the following command.  This will connect to the websocket to get the market
  * PROJECT_NAME - service account to use
  * ZONE - zone to deploy the kubernetes cluster to
  * CLUSTER_NAME - name of kubernetes cluster
+ * POD_NAME_PREFIX - pod name prefix
  * WS_URL - websocket url (wss://domain/path)
  * TOPIC_PREFIX - full prefix for topic names ("projects/$PROJECT_NAME/topics/prefix_")
  * MKT_PAIR_LIST_LIMIT - Gets first n pairs from the list.  Or use -1 for all
@@ -125,8 +126,9 @@ Run the following command.  This will connect to the websocket to get the market
 export PROJECT_NAME=xxxx
 export ZONE=us-central1-a
 export CLUSTER_NAME=ftx-com-mktpair-cluster
+export POD_NAME_PREFIX=ftx-com
 export WS_URL=wss://domain.com
-export TOPIC_PREFIX=projects/$PROJECT_NAME/topics/prefix_
+export TOPIC_PREFIX=projects/$PROJECT_NAME/topics/ftx_com_
 export MKT_PAIR_LIST_LIMIT=25
 export DEBUG=true
 
@@ -134,7 +136,7 @@ npm install
 
 mkdir cloudbuild_mktpairs
 
-node ./generateCBfiles.js $PROJECT_NAME $ZONE $CLUSTER_NAME $WS_URL $TOPIC_PREFIX $MKT_PAIR_LIST_LIMIT $DEBUG
+node ./generateCBfiles.js $PROJECT_NAME $ZONE $CLUSTER_NAME $POD_NAME_PREFIX $WS_URL $TOPIC_PREFIX $MKT_PAIR_LIST_LIMIT $DEBUG
 ```
 
 This program will generate the following.
@@ -149,7 +151,13 @@ To change what the program is generating, look at the outputCBCalls, outputCBBui
 
 ### 4) Create pods and services with cloud build
 
-Now that the configuration and scripts have been generated for the marketpairs, run the script to deploy the pods per marketpair and channel.  The generated YAML files were saved in the `cloudbuild_mktpairs` folder along with the script to deploy them.  Run the script to deploy the pods to the kubernetes cluster
+Now that the configuration and scripts have been generated for the marketpairs, run the script to deploy the pods per marketpair and channel.  The generated YAML files were saved in the `cloudbuild_mktpairs` folder along with the script to deploy them.  Run the script to deploy the pods to the kubernetes cluster.
+
+Update the config to match the naming to fit your environment
+```
+vi ./setup/variables.tf
+ - Check variable "name", this will the prefix of the pod names.  
+```
 
 ```
 ls -l ./cloudbuild_mktpairs

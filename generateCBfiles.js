@@ -35,19 +35,21 @@ var project;
 var zone;
 var marketPairLimit;
 var clusterName;
+var podNamePrefix;
 
-// node ./generateCBfiles.js "ftx-com-streaming-demo" "asia-northeast1-b" "ftx-com-mktpair-cluster" "wss://ftx.us/ws/" "projects/$PROJECT_NAME/topics/ftx_us_" 5 true
+// node ./generateCBfiles.js "ftx-com-streaming-demo" "asia-northeast1-b" "ftx-com-mktpair-cluster" "ftx-com" "wss://ftx.us/ws/" "projects/$PROJECT_NAME/topics/ftx_us_" 5 true
 if(clArgs.length != 7) {
-    console.error("Incorrect number of arguments. \nUsage: node ./generateCBfiles.js {project} {zone} {cluster-name} {ws-url} {topic-prefix} {market-pair-limit} {debug}");
+    console.error("Incorrect number of arguments. \nUsage: node ./generateCBfiles.js {project} {zone} {cluster-name} {pod-name-prefix} {ws-url} {topic-prefix} {market-pair-limit} {debug}");
 } else {
 
     project = clArgs[0];
     zone = clArgs[1];
     clusterName = clArgs[2];
-    wsUrl = clArgs[3];
-    topicPrefix = clArgs[4];
-    marketPairLimit = clArgs[5];
-    if(clArgs[6] === "true") {
+    podNamePrefix = clArgs[3];
+    wsUrl = clArgs[4];
+    topicPrefix = clArgs[5];
+    marketPairLimit = clArgs[6];
+    if(clArgs[7] === "true") {
         outputMessages = true;
     }
 }
@@ -171,16 +173,17 @@ function writeCBFile(marketPair, type) {
   var marketPairStrD = marketPair.replaceAll('/','-').toLowerCase();
   var marketPairStrU = marketPair.replaceAll('/','_').toLowerCase();
   marketPairStrU = marketPairStrU.replaceAll('-','_').toLowerCase();
+  var podNamePrefixU = podNamePrefix.replaceAll('-','_').toLowerCase();
 
   console.log("Creating cloud build file for " + marketPairStrU + " " + type);
-  var appNameD = "ftx-com-" + type + "-" + marketPairStrD;
-  var appNameU = "ftx_com_" + type + "_" + marketPairStrU;
+  var appNameD = podNamePrefix + type + "-" + marketPairStrD;
+  var appNameU = podNamePrefixU + type + "_" + marketPairStrU;
   var fileNamePrefix = "./cloudbuild_" + type + "_";
 
 const cbTemplate = `timeout: 10800s
 substitutions:
   _DYSON_APP_NAME: "${appNameD}"
-  _DYSON_TOPIC: "projects/ftx-com-streaming-demo/topics/${appNameU}"
+  _DYSON_TOPIC: "projects/${project}/topics/${appNameU}"
 steps:
   # [Set project Id throughout the repo]
 - name: gcr.io/kpt-dev/kpt:latest
@@ -225,9 +228,10 @@ function outputCBBuilds(marketPair, type) {
   var marketPairStrD = marketPair.replaceAll('/','-').toLowerCase();
   var marketPairStrU = marketPair.replaceAll('/','_').toLowerCase();
   marketPairStrU = marketPairStrU.replaceAll('-','_').toLowerCase();
+  var podNamePrefixU = podNamePrefix.replaceAll('-','_').toLowerCase();
 
-  var appNameD = "ftx-com-" + type + "-" + marketPairStrD;
-  var appNameU = "ftx_com_" + type + "_" + marketPairStrU;
+  var appNameD = podNamePrefix + type + "-" + marketPairStrD;
+  var appNameU = podNamePrefixU + type + "_" + marketPairStrU;
   var fileName = "cloudbuild_mktpairs/cloudbuild_" + type + "_" + marketPairStrU + ".yaml";
 
   const cbCall = `gcloud builds submit --config ${fileName}` + "\n";
@@ -247,9 +251,10 @@ function outputCBCalls(marketPair, type) {
   var marketPairStrD = marketPair.replaceAll('/','-').toLowerCase();
   var marketPairStrU = marketPair.replaceAll('/','_').toLowerCase();
   marketPairStrU = marketPairStrU.replaceAll('-','_').toLowerCase();
+  var podNamePrefixU = podNamePrefix.replaceAll('-','_').toLowerCase();
 
-  var appNameD = "ftx-com-" + type + "-" + marketPairStrD;
-  var appNameU = "ftx_com_" + type + "_" + marketPairStrU;
+  var appNameD = podNamePrefix + type + "-" + marketPairStrD;
+  var appNameU = podNamePrefixU + type + "_" + marketPairStrU;
   var fileName = "cloudbuild_mktpairs/cloudbuild_" + type + "_" + marketPairStrU + ".yaml";
 
   const cbCall = `- name: 'gcr.io/cloud-builders/gcloud'
@@ -271,9 +276,10 @@ function outputIngressPaths(marketPair, type) {
   var marketPairStrD = marketPair.replaceAll('/','-').toLowerCase();
   var marketPairStrU = marketPair.replaceAll('/','_').toLowerCase();
   marketPairStrU = marketPairStrU.replaceAll('-','_').toLowerCase();
+  var podNamePrefixU = podNamePrefix.replaceAll('-','_').toLowerCase();
 
-  var appNameD = "ftx-com-" + type + "-" + marketPairStrD;
-  var appNameU = "ftx_com_" + type + "_" + marketPairStrU;
+  var appNameD = podNamePrefix + type + "-" + marketPairStrD;
+  var appNameU = podNamePrefixU + type + "_" + marketPairStrU;
 
   const ingressPre = `apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -292,7 +298,7 @@ spec:
         pathType: ImplementationSpecific
         backend:
           service:
-            name: ftx-com-ticker-btc-usd-service
+            name: ${podNamePrefix}ticker-btc-usd-service
             port:
               number: 80` + "\n";
 
