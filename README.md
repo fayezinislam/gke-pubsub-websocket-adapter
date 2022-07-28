@@ -104,9 +104,12 @@ Run the following command to create the GKE cluster and build the docker image. 
 
 First, update the config to set the prefix of the GKE cluster name
 ```
-vi ./setup/variables.tf
+vi setup/variables.tf
  - Check variable "name", this will set the prefix of the cluster name. 
  - Set other variables like region, zone, project to set defaults 
+
+vi setup/main.tf
+ - Check default settings for the cluster and other infrastructure
 ```
 
 Run this script to create the infrastructure

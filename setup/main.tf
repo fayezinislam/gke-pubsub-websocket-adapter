@@ -50,7 +50,7 @@ resource "google_container_node_pool" "dyson_pool" {
   name       = "${var.name}-pool"
   location   = var.zone
   cluster    = google_container_cluster.dyson_cluster.name
-  node_count = 3 
+  node_count = 5 
 
   management {
     auto_repair = "true"
