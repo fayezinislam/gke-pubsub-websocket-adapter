@@ -102,6 +102,14 @@ For each PubSub topic, an accompanying websocket service will be created and exp
   
 Run the following command to create the GKE cluster and build the docker image.  This script will trigger the Cloud Build tool to run the build for the [cloudbuild.yaml](cloudbuild.yaml) file.
 
+First, update the config to set the prefix of the GKE cluster name
+```
+vi ./setup/variables.tf
+ - Check variable "name", this will set the prefix of the cluster name. 
+ - Set other variables like region, zone, project to set defaults 
+```
+
+Run this script to create the infrastructure
 ```
 ./deploy.sh
 ```
@@ -126,8 +134,8 @@ Run the following command.  This will connect to the websocket to get the market
 export PROJECT_NAME=xxxx
 export ZONE=us-central1-a
 export CLUSTER_NAME=ftx-com-mktpair-cluster
-export POD_NAME_PREFIX=ftx-com
-export WS_URL=wss://domain.com
+export POD_NAME_PREFIX=ftx-com-
+export WS_URL=wss://ftx.us/ws/
 export TOPIC_PREFIX=projects/$PROJECT_NAME/topics/ftx_com_
 export MKT_PAIR_LIST_LIMIT=25
 export DEBUG=true
@@ -152,12 +160,6 @@ To change what the program is generating, look at the outputCBCalls, outputCBBui
 ### 4) Create pods and services with cloud build
 
 Now that the configuration and scripts have been generated for the marketpairs, run the script to deploy the pods per marketpair and channel.  The generated YAML files were saved in the `cloudbuild_mktpairs` folder along with the script to deploy them.  Run the script to deploy the pods to the kubernetes cluster.
-
-Update the config to match the naming to fit your environment
-```
-vi ./setup/variables.tf
- - Check variable "name", this will the prefix of the pod names.  
-```
 
 ```
 ls -l ./cloudbuild_mktpairs

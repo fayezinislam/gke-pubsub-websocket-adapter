@@ -38,8 +38,9 @@ var clusterName;
 var podNamePrefix;
 
 // node ./generateCBfiles.js "ftx-com-streaming-demo" "asia-northeast1-b" "ftx-com-mktpair-cluster" "ftx-com" "wss://ftx.us/ws/" "projects/$PROJECT_NAME/topics/ftx_us_" 5 true
-if(clArgs.length != 7) {
+if(clArgs.length != 8) {
     console.error("Incorrect number of arguments. \nUsage: node ./generateCBfiles.js {project} {zone} {cluster-name} {pod-name-prefix} {ws-url} {topic-prefix} {market-pair-limit} {debug}");
+    process.exit(); 
 } else {
 
     project = clArgs[0];
@@ -136,7 +137,7 @@ var connect = async function() {
                     
             }
             console.log("Files created for " + marketPairCounter + " market pairs");
-	    process.exit(); 
+	        process.exit(); 
         }
 
         subscribeToMarketList();
