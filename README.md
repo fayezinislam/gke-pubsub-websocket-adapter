@@ -253,4 +253,4 @@ The `gke-pubsub-websocket-adapter` is under active development. Interfaces and f
 
 This repository is licensed under the Apache 2 license (see [LICENSE](LICENSE.txt)).
 
-Contributions are welcome. See [CONTRIBUTING](CONTRIBUTING.md) for more information.
+Contributions are welcome. See [CONTRIBUTING](CONTRIBUTING.md) for more information. 
